@@ -1,0 +1,16 @@
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\DungeonCrawler.exe.config
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\OpenTK.dll.config
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\DungeonCrawler.exe
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\DungeonCrawler.pdb
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\AtriLib3.dll
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\MonoGame.Framework.dll
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\NVorbis.dll
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\OpenTK.dll
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\AtriLib3.pdb
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\obj\x86\Debug\DungeonCrawler.csprojResolveAssemblyReference.cache
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\obj\x86\Debug\DungeonCrawler.exe
+c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\obj\x86\Debug\DungeonCrawler.pdb
+C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\Content\Data\GFX\GameObjects.xnb
+C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\Content\Data\GFX\Tileset1.xnb
+C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\FarseerPhysics MonoGame.dll
+C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\Content\Data\GFX\Entities\HeroKnight.xnb

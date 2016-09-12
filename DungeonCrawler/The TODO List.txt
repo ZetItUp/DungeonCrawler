@@ -1,0 +1,6 @@
+TODO LIST
+
+Textures:
+* Wall (Dark Blocks)
+
+Game Design:
