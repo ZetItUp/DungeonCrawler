@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AtriLib3.World2D;
 
 namespace DungeonCrawler.World
 {
@@ -11,7 +12,7 @@ namespace DungeonCrawler.World
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public char[,] Tiles { get; set; }
+        public char[] Tiles { get; set; }
 
         public Room()
         {
@@ -22,7 +23,7 @@ namespace DungeonCrawler.World
         {
             Width = width;
             Height = height;
-            Tiles = new char[width, height];
+            Tiles = new char[width * height];
         }
     }
 }

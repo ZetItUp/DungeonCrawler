@@ -12,5 +12,4 @@ c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCra
 c:\users\zetitup\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\obj\x86\Debug\DungeonCrawler.pdb
 C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\Content\Data\GFX\GameObjects.xnb
 C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\Content\Data\GFX\Tileset1.xnb
-C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\FarseerPhysics MonoGame.dll
 C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Debug\Content\Data\GFX\Entities\HeroKnight.xnb

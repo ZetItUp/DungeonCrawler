@@ -25,10 +25,18 @@ namespace DungeonCrawler
 
         #endregion
 
+        #region DEPTHS
+
+        public const float DEPTH_ENTITY = 0.9f;
+        public const float DEPTH_JUST_ABOVE_ENTITY = 0.91f; // I Love my var naming..
+
+        #endregion
+
         #region LAYERS
 
         public const int BOTTOM_LAYER = 0;
         public const int SHADOW_LAYER = 1;
+        public const int FLOOR_LAYER = 2;
 
         #endregion
 
@@ -41,8 +49,9 @@ namespace DungeonCrawler
 
         public const int ENVIRONMENT_SHADOW_SQUARE = 2000;
         public const int ENVIRONMENT_SHADOW_POINT_DOWN_RIGHT = 2001;
-        public const int ENVIRONMENT_SHADOW_POINT_UP_LEFT = 2002;
-        public const int ENVIRONMENT_SHADOW_POINT_UP_RIGHT = 2003;
+        public const int ENVIRONMENT_SHADOW_POINT_DOWN_RIGHT_BOTTOM = 2002;
+        public const int ENVIRONMENT_SHADOW_POINT_UP_LEFT = 2003;
+        public const int ENVIRONMENT_SHADOW_POINT_UP_RIGHT = 2004;
 
         #endregion
 
@@ -94,7 +103,13 @@ namespace DungeonCrawler
         public const int TILE_WALL_PILLAR_RIGHT_BOTTOM = 1309;
         public const int TILE_WALL_DOOR = 1310;
         public const int TILE_WALL_DOOR_LARGE = 1311;
-        
+
+        #endregion
+
+        #region ENTITIES
+
+        public const int ENTITY_PLAYER = 0;
+
         #endregion
     }
 }

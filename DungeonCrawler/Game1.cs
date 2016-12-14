@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using AtriLib3.Utility;
 using AtriLib3.Screens;
+using AtriLib3.Graphics;
 using AtriLib3;
 using System;
 
@@ -54,6 +55,7 @@ namespace DungeonCrawler
         {
             Constants.ContentMgr = Content;
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            Pixels.Initialize(graphics.GraphicsDevice, spriteBatch);
             ScreenManager.SetSpriteBatch(spriteBatch);
             Screens.GameScreen gs = new Screens.GameScreen();
             ScreenManager.SetScreen(gs);

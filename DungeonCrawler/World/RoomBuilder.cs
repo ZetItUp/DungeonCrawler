@@ -66,7 +66,7 @@ namespace DungeonCrawler.World
 
                         for(int i = 0; i < currLine.Length; i++)
                         {
-                            room.Tiles[x, y] = currLine[i];
+                            room.Tiles[x + y * room.Width] = currLine[i];
                             x++;
                         }
 

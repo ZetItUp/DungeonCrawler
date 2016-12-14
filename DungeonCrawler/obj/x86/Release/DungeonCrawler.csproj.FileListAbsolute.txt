@@ -12,4 +12,4 @@ C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCra
 C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\obj\x86\Release\DungeonCrawler.csprojResolveAssemblyReference.cache
 C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\obj\x86\Release\DungeonCrawler.exe
 C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\obj\x86\Release\DungeonCrawler.pdb
-C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Release\FarseerPhysics MonoGame.dll
+C:\Users\ZetItUp\documents\visual studio 2015\Projects\DungeonCrawler\DungeonCrawler\bin\DesktopGL\x86\Release\Content\Data\GFX\Entities\HeroKnight.xnb

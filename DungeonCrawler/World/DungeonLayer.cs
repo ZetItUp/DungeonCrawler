@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using AtriLib3.World2D;
+using DungeonCrawler.Screens;
 
 namespace DungeonCrawler.World
 {
@@ -33,6 +34,11 @@ namespace DungeonCrawler.World
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (!DrawMe)
+            {
+                return;
+            }
+
             foreach(var t in Tiles)
             {
                 var texture = TileEngine.GetTexture(t.ID);
@@ -42,9 +48,27 @@ namespace DungeonCrawler.World
                     continue;
                 }
 
+                Color dColor = WorldTimer.GetWorldColorTint();
+                if (t.HasCollision)
+                {
+                    dColor = Color.Red;
+                }
+
+                var player = GameScreen.GetPlayer();
+                if (player != null)
+                {
+                    if(t.IDInt >= GameConstants.TILE_ROOF_LEFT_TOP_CORNER && t.IDInt <= GameConstants.TILE_ROOF_RIGHT_TOP_CORNER)
+                    {
+                        if (player.ObjectRectangle.Intersects(t.ObjectRectangle))
+                        {
+                            dColor.A = 1;
+                        }
+                    }
+                }
+
                 spriteBatch.Draw(texture.Texture, new Rectangle((int)(t.Position.X * BaseTileOffsetX), (int)(t.Position.Y * BaseTileOffsetY), Tile.DEFAULT_WIDTH, Tile.DEFAULT_HEIGHT),
-                    texture.SourceRectangle, 
-                    Color.White, 0f, Vector2.Zero, SpriteEffects.None, ZOrder);
+                    texture.SourceRectangle,
+                    dColor, 0f, Vector2.Zero, SpriteEffects.None, t.Depth);
             }
         }
     }

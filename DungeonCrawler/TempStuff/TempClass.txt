@@ -1,0 +1,64 @@
+﻿int squaresPerTile = GameScreen.TileSizeMultiplier;
+
+int tileOffsetX = (int)(targetPosition.X / GameScreen.TileWidth);
+int mouseX = tileOffsetX * GameScreen.TileWidth;
+int mouseTileOffsetX = ((int)targetPosition.X - ((int)(targetPosition.X / GameScreen.TileWidth) * GameScreen.TileWidth));
+int mouseOffsetX = mouseTileOffsetX / (GameScreen.TileWidth / squaresPerTile);
+
+int tileOffsetY = (int)(targetPosition.Y / GameScreen.TileHeight);
+int mouseY = tileOffsetY * GameScreen.TileHeight;
+int mouseTileOffsetY = ((int)targetPosition.Y - ((int)(targetPosition.Y / GameScreen.TileHeight) * GameScreen.TileHeight));
+int mouseOffsetY = mouseTileOffsetY / (GameScreen.TileHeight / squaresPerTile);
+                
+int mouseGridX = (mouseOffsetX * (GameScreen.TileWidth / squaresPerTile)) + mouseX;
+int mouseGridY = (mouseOffsetY * (GameScreen.TileHeight / squaresPerTile)) + mouseY;
+
+mx = mouseGridX / (GameScreen.TileWidth / squaresPerTile);
+my = mouseGridY / (GameScreen.TileHeight / squaresPerTile);
+
+playerOffsetX = (int)(Position.X / (GameScreen.TileWidth / squaresPerTile));
+playerOffsetY = (int)((Position.Y) / (GameScreen.TileHeight / squaresPerTile));
+
+
+
+// Make sure we don't update the pathing or move unless we need to!
+if (tarPositions.Count > 0)
+{
+    var currGoal = new Vector2(tarPositions[tarPositions.Count - 1].X / (GameScreen.TileWidth / GameScreen.TileSizeMultiplier), 
+        tarPositions[tarPositions.Count - 1].Y / (GameScreen.TileWidth / GameScreen.TileSizeMultiplier));
+
+    Vector2 mp = new Vector2(mx, my);
+    Game1.WindowMessage = currGoal.ToString() + "   " + mp.ToString();
+
+    if (currGoal.X != mp.X && currGoal.Y != mp.Y)
+    {
+        tarPositions.Clear();
+
+        Point playerPoint = new Point(playerOffsetX, playerOffsetY);
+        Point tarPoint = new Point(mx, my);
+        var paths = GameScreen.aStar.FindPath(playerPoint, tarPoint);
+
+        for (int i = 0; i < paths.Count; i++)
+        {
+            tarPositions.Add(paths[i]);
+        }
+    }
+}
+// Set the pathing if there is none set
+else
+{
+    Point playerPoint = new Point(playerOffsetX, playerOffsetX);
+    Point tarPoint = new Point(mx, my);
+
+    if (playerPoint.X != tarPoint.X && playerPoint.Y != tarPoint.Y)
+    {
+        Game1.WindowMessage = playerPoint.ToString() + "   " + tarPoint.ToString();
+
+        var paths = GameScreen.aStar.FindPath(playerPoint, tarPoint);
+
+        for (int i = 0; i < paths.Count; i++)
+        {
+            tarPositions.Add(paths[i]);
+        }
+    }
+}

@@ -170,7 +170,14 @@ namespace DungeonCrawler.Screens
             {
                 TextureID = GameConstants.ENVIRONMENT_SHADOW_POINT_DOWN_RIGHT.ToString(),
                 TextureSheetNum = GameConstants.TILESHEET_DUNGEON_01,
-                TileSheetRectangle = new Rectangle(128, 32, 32, 64)
+                TileSheetRectangle = new Rectangle(128, 32, 32, 32)
+            };
+
+            TileData tileShadowPointDownRightBottom = new TileData()
+            {
+                TextureID = GameConstants.ENVIRONMENT_SHADOW_POINT_DOWN_RIGHT_BOTTOM.ToString(),
+                TextureSheetNum = GameConstants.TILESHEET_DUNGEON_01,
+                TileSheetRectangle = new Rectangle(128, 64, 32, 32)
             };
 
             TileData tileShadowPointUpRight = new TileData()
@@ -270,6 +277,7 @@ namespace DungeonCrawler.Screens
             TileEngine.AddTileData(tileShadowPointUpLeft);
             TileEngine.AddTileData(tileShadowPointUpRight);
             TileEngine.AddTileData(tileShadowPointDownRight);
+            TileEngine.AddTileData(tileShadowPointDownRightBottom);
             TileEngine.AddTileData(tileShadow);
             TileEngine.AddTileData(tileWallLarge);
             TileEngine.AddTileData(tileWallDoor);
@@ -293,12 +301,29 @@ namespace DungeonCrawler.Screens
             TileEngine.AddTileData(tileRoofEdgeBottom);
         }
 
+        /// <summary>
+        /// Get a random tile style depending on the current style of the current tile.
+        /// For example, if it is a FLOOR_BRICK, return a light or dark version.
+        /// </summary>
+        /// <param name="originalID">Current Tile ID</param>
+        /// <returns>Random Generated Tile ID</returns>
+        private int GetRandomGroundTileStyle(int originalID)
+        {
+            if(originalID == GameConstants.TILE_FLOOR_BRICK)
+            {
+                return Game1.rand.Next(GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK);
+            }
+
+            return 0;
+        }
+
         private void DoLayerCalculations(Layer layer)
         {
             /*
              *   # = Occupied Tile
              *   . = Free Tile
              */
+            var floorLayer = worldMap.GetLayer(GameConstants.FLOOR_LAYER);
 
             for (int x = 0; x < layer.Width; x++)
             {
@@ -337,6 +362,7 @@ namespace DungeonCrawler.Screens
                                 (tDiagRightDown.IDInt < GameConstants.TILE_ROOF || tDiagRightDown.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_TOP_LEFT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *    t.
@@ -387,6 +413,7 @@ namespace DungeonCrawler.Screens
                                 (tDiagUpRight.IDInt < GameConstants.TILE_ROOF || tDiagUpRight.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_BOTTOM_LEFT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *    #.
@@ -398,7 +425,7 @@ namespace DungeonCrawler.Screens
                                 t.ID = GameConstants.TILE_ROOF_EDGE_LEFT.ToString();
                             }
                             /*
-                             *    .
+                             *    ..
                              *    t#
                              */
                             else if ((tRight.IDInt >= GameConstants.TILE_ROOF && tRight.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
@@ -437,6 +464,7 @@ namespace DungeonCrawler.Screens
                                 (tDiagLeftDown.IDInt < GameConstants.TILE_ROOF || tDiagLeftDown.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_TOP_RIGHT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *    .t
@@ -487,6 +515,7 @@ namespace DungeonCrawler.Screens
                                 (tDiagUpLeft.IDInt < GameConstants.TILE_ROOF || tDiagUpLeft.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *    .#
@@ -530,6 +559,7 @@ namespace DungeonCrawler.Screens
                                 (tDiagLeftDown.IDInt >= GameConstants.TILE_ROOF && tDiagLeftDown.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
                                 (tDiagRightDown.IDInt >= GameConstants.TILE_ROOF && tDiagRightDown.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
+                                t.HasCollision = true;
                                 continue;
                             }
                             /*
@@ -541,6 +571,7 @@ namespace DungeonCrawler.Screens
                                 (tDown.IDInt < GameConstants.TILE_ROOF || tDown.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_BOTTOM.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *   #t#
@@ -553,6 +584,7 @@ namespace DungeonCrawler.Screens
                                 (tDiagRightDown.IDInt >= GameConstants.TILE_ROOF || tDiagRightDown.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_TOP_RIGHT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *   #t#
@@ -565,6 +597,7 @@ namespace DungeonCrawler.Screens
                                 (tDiagRightDown.IDInt < GameConstants.TILE_ROOF || tDiagRightDown.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_TOP_LEFT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                         }
                         #endregion
@@ -590,6 +623,7 @@ namespace DungeonCrawler.Screens
                                 (tDiagUpLeft.IDInt >= GameConstants.TILE_ROOF && tDiagUpLeft.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
                                 (tDiagUpRight.IDInt >= GameConstants.TILE_ROOF && tDiagUpRight.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
+                                t.HasCollision = true;
                                 continue;
                             }
                             /*
@@ -601,6 +635,8 @@ namespace DungeonCrawler.Screens
                                 (tUp.IDInt < GameConstants.TILE_ROOF || tUp.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_TOP.ToString();
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
+                                t.HasCollision = true;
                             }
                             /*
                              *   .##
@@ -613,6 +649,7 @@ namespace DungeonCrawler.Screens
                                 (tDiagUpRight.IDInt >= GameConstants.TILE_ROOF || tDiagUpRight.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *   ##.
@@ -625,6 +662,7 @@ namespace DungeonCrawler.Screens
                                 (tDiagUpRight.IDInt < GameConstants.TILE_ROOF || tDiagUpRight.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_BOTTOM_LEFT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                         }
                         #endregion
@@ -651,6 +689,7 @@ namespace DungeonCrawler.Screens
                                (tDiagDownRight.IDInt >= GameConstants.TILE_ROOF && tDiagDownRight.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
                                (tDiagUpRight.IDInt >= GameConstants.TILE_ROOF && tDiagUpRight.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
+                                t.HasCollision = true;
                                 continue;
                             }
                             /*
@@ -665,6 +704,7 @@ namespace DungeonCrawler.Screens
                               (tDiagUpRight.IDInt < GameConstants.TILE_ROOF || tDiagUpRight.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_RIGHT.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *  #.
@@ -678,6 +718,7 @@ namespace DungeonCrawler.Screens
                               (tDiagUpRight.IDInt < GameConstants.TILE_ROOF || tDiagUpRight.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_RIGHT.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *  ##
@@ -691,6 +732,7 @@ namespace DungeonCrawler.Screens
                               (tDiagUpRight.IDInt >= GameConstants.TILE_ROOF && tDiagUpRight.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_RIGHT.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *  #.
@@ -704,6 +746,7 @@ namespace DungeonCrawler.Screens
                               IsOutside(tDiagUpRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_BOTTOM_LEFT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *  ##
@@ -717,6 +760,7 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagUpRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_TOP_LEFT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                         }
                         #endregion
@@ -743,6 +787,8 @@ namespace DungeonCrawler.Screens
                                (tDiagDownLeft.IDInt >= GameConstants.TILE_ROOF && tDiagDownLeft.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
                                (tDiagUpLeft.IDInt >= GameConstants.TILE_ROOF && tDiagUpLeft.IDInt <= GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
+                                t.HasCollision = true;
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                                 continue;
                             }
                             /*
@@ -757,6 +803,7 @@ namespace DungeonCrawler.Screens
                               (tDiagUpLeft.IDInt < GameConstants.TILE_ROOF || tDiagUpLeft.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_LEFT.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *  .#
@@ -770,6 +817,7 @@ namespace DungeonCrawler.Screens
                               (tDiagUpLeft.IDInt < GameConstants.TILE_ROOF || tDiagUpLeft.IDInt > GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_LEFT.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *  ##
@@ -783,6 +831,7 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagUpLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_LEFT.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *  ##
@@ -796,6 +845,7 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagUpLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_TOP_RIGHT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                             /*
                              *  .#
@@ -809,6 +859,7 @@ namespace DungeonCrawler.Screens
                               IsOutside(tDiagUpLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER.ToString();
+                                t.HasCollision = true;
                             }
                         }
                         #endregion
@@ -842,11 +893,13 @@ namespace DungeonCrawler.Screens
                                IsWithin(tDiagUpRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
                                IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
+                                t.HasCollision = true;
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                                 continue;
                             }
                             /*
                              *   ...
-                             *   #t.
+                             *   #t.    Transparent Tile Family
                              *   ##.
                              */
                             else if (IsWithin(tLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
@@ -859,6 +912,10 @@ namespace DungeonCrawler.Screens
                               IsOutside(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_RIGHT_TOP_CORNER.ToString();
+
+                                AddTileCopyFromLayer(t, floorLayer);
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
+                                tDown.HasCollision = true;
                             }
                             /*
                              *   ##.
@@ -875,6 +932,8 @@ namespace DungeonCrawler.Screens
                               IsOutside(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_RIGHT_BOTTOM_CORNER.ToString();
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
+                                t.HasCollision = true;
                             }
                             /*
                              *   ##.
@@ -891,6 +950,8 @@ namespace DungeonCrawler.Screens
                               IsOutside(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_RIGHT.ToString();
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
+                                t.HasCollision = true;
                             }
                             /*
                              *   .##
@@ -907,10 +968,12 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_LEFT.ToString();
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
+                                t.HasCollision = true;
                             }
                             /*
                              *   ...
-                             *   .t#
+                             *   .t#    Transparent Tile Family
                              *   .##
                              */
                             else if (IsOutside(tLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
@@ -923,6 +986,9 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_LEFT_TOP_CORNER.ToString();
+
+                                AddTileCopyFromLayer(t, floorLayer);
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                             }
                             /*
                              *   .##
@@ -939,6 +1005,8 @@ namespace DungeonCrawler.Screens
                               IsOutside(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_LEFT_BOTTOM_CORNER.ToString();
+                                t.HasCollision = true;
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                             }
                             /*
                              *   ###
@@ -955,6 +1023,8 @@ namespace DungeonCrawler.Screens
                               IsOutside(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_BOTTOM.ToString();
+                                t.HasCollision = true;
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                             }
                             /*
                              *   ###
@@ -971,6 +1041,8 @@ namespace DungeonCrawler.Screens
                               IsOutside(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_BOTTOM.ToString();
+                                t.HasCollision = true;
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                             }
                             /*
                              *   ###
@@ -987,6 +1059,8 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_BOTTOM.ToString();
+                                t.HasCollision = true;
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                             }
                             /*
                              *   ###
@@ -1003,10 +1077,12 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_BOTTOM.ToString();
+                                t.HasCollision = true;
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                             }
                             /*
                              *   ...
-                             *   #t#
+                             *   #t#    Transparent Tile Family
                              *   ###
                              */
                             else if (IsWithin(tLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
@@ -1019,10 +1095,14 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_TOP.ToString();
+
+                                AddTileCopyFromLayer(t, floorLayer);
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
+                                tDown.HasCollision = true;
                             }
                             /*
                              *   #..
-                             *   #t#
+                             *   #t#    Transparent Tile Family
                              *   ###
                              */
                             else if (IsWithin(tLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
@@ -1035,10 +1115,14 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_TOP.ToString();
+
+                                AddTileCopyFromLayer(t, floorLayer);
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
+                                tDown.HasCollision = true;
                             }
                             /*
                              *   #.#
-                             *   #t#
+                             *   #t#    Transparent Tile Family
                              *   ###
                              */
                             else if (IsWithin(tLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
@@ -1051,10 +1135,13 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_TOP.ToString();
+
+                                AddTileCopyFromLayer(t, floorLayer);
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                             }
                             /*
                              *   ..#
-                             *   #t#
+                             *   #t#    Transparent Tile Family
                              *   ###
                              */
                             else if (IsWithin(tLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
@@ -1067,6 +1154,10 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_TOP.ToString();
+
+                                AddTileCopyFromLayer(t, floorLayer);
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
+                                tDown.HasCollision = true;
                             }
                             /*
                              *   ###
@@ -1083,6 +1174,8 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_LEFT.ToString();
+                                t.HasCollision = true;
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                             }
                             /*
                              *   ###
@@ -1099,6 +1192,8 @@ namespace DungeonCrawler.Screens
                               IsOutside(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_RIGHT.ToString();
+                                t.HasCollision = true;
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                             }
                             /*
                              *   ##.
@@ -1115,6 +1210,8 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_RIGHT.ToString();
+                                t.HasCollision = true;
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                             }
                             /*
                              *   .##
@@ -1131,6 +1228,8 @@ namespace DungeonCrawler.Screens
                               IsWithin(tDiagDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
                             {
                                 t.ID = GameConstants.TILE_ROOF_EDGE_LEFT.ToString();
+                                t.HasCollision = true;
+                                t.Depth = GameConstants.DEPTH_JUST_ABOVE_ENTITY;
                             }
                         }
                         #endregion
@@ -1153,6 +1252,7 @@ namespace DungeonCrawler.Screens
                 {
                     Tile t = layer.GetTile(x, y);
                     Tile shadowTile = shadowLayer.GetTile(x, y);
+                    shadowTile.Depth = 0.95f;
 
                     if (IsWithin(t.IDInt, GameConstants.TILE_WALL_TOP, GameConstants.TILE_WALL_BOTTOM_DARK))
                     {
@@ -1171,6 +1271,12 @@ namespace DungeonCrawler.Screens
                             IsWithin(tDown.IDInt, GameConstants.TILE_WALL_TOP, GameConstants.TILE_WALL_BOTTOM_DARK))
                         {
                             shadowTile.ID = GameConstants.ENVIRONMENT_SHADOW_POINT_UP_RIGHT.ToString();
+                        }
+
+                        if (IsWithin(tUp.IDInt, GameConstants.TILE_WALL_TOP, GameConstants.TILE_WALL_TOP_DARK) &&
+                            IsWithin(tLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
+                        {
+                            shadowTile.ID = GameConstants.ENVIRONMENT_SHADOW_SQUARE.ToString();
                         }
                     }
                     else if (IsWithin(t.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK))
@@ -1212,17 +1318,17 @@ namespace DungeonCrawler.Screens
                          * Wt
                          * WB
                          */
-                        else if (IsWithin(tLeft.IDInt, GameConstants.TILE_WALL_TOP, GameConstants.TILE_WALL_BOTTOM_DARK) &&
-                                IsWithin(tUpLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
-                                IsWithin(tUp.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
-                                IsWithin(tDown.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
-                                IsWithin(tDownLeft.IDInt, GameConstants.TILE_WALL_TOP, GameConstants.TILE_WALL_BOTTOM_DARK))
-                        {
-                            //shadowTile.ID = GameConstants.ENVIRONMENT_SHADOW_POINT_DOWN_RIGHT.ToString();
-                        }
+                        //else if (IsWithin(tLeft.IDInt, GameConstants.TILE_WALL_TOP, GameConstants.TILE_WALL_BOTTOM_DARK) &&
+                        //        IsWithin(tUpLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
+                        //        IsWithin(tUp.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
+                        //        IsWithin(tDown.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
+                        //        IsWithin(tDownLeft.IDInt, GameConstants.TILE_WALL_TOP, GameConstants.TILE_WALL_BOTTOM_DARK))
+                        //{
+                        //    //shadowTile.ID = GameConstants.ENVIRONMENT_SHADOW_POINT_DOWN_RIGHT.ToString();
+                        //}
                         /*  
                          * #
-                         * Pt
+                         * Pt   P = Pillar.
                          * PB
                          */
                         else if (IsWithin(tDownLeft.IDInt, GameConstants.TILE_WALL_PILLAR_RIGHT_TOP, GameConstants.TILE_WALL_PILLAR_RIGHT_BOTTOM) &&
@@ -1232,68 +1338,17 @@ namespace DungeonCrawler.Screens
                         {
                             shadowTile.ID = GameConstants.ENVIRONMENT_SHADOW_POINT_DOWN_RIGHT.ToString();
                         }
-                        ///*  
-                        // *  
-                        // * BtB
-                        // * ###
-                        // */
-                        //else if (IsWithin(tDownLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
-                        //    IsWithin(tLeft.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
-                        //    IsWithin(tRight.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
-                        //    IsWithin(tDown.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
-                        //    IsWithin(tDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
-                        //{
-                        //    Tile shadowTile2 = shadowLayer.GetTile(x, y - 1);
-
-                        //    shadowTile.ID = GameConstants.ENVIRONMENT_SHADOW_SQUARE.ToString();
-                        //    shadowTile2.ID = GameConstants.ENVIRONMENT_SHADOW_SQUARE.ToString();
-                        //}
-                        ///*  
-                        // *  
-                        // * BtB
-                        // * ##B
-                        // */
-                        //else if (IsWithin(tDownLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
-                        //    IsWithin(tLeft.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
-                        //    IsWithin(tRight.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
-                        //    IsWithin(tDown.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
-                        //    IsWithin(tDownRight.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK))
-                        //{
-                        //    Tile shadowTile2 = shadowLayer.GetTile(x, y - 1);
-
-                        //    shadowTile.ID = GameConstants.ENVIRONMENT_SHADOW_SQUARE.ToString();
-                        //    shadowTile2.ID = GameConstants.ENVIRONMENT_SHADOW_SQUARE.ToString();
-                        //}
-                        ///*  
-                        // *  
-                        // * Bt#   
-                        // * ###
-                        // */
-                        //else if (IsWithin(tDownLeft.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
-                        //    IsWithin(tLeft.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
-                        //    IsWithin(tRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
-                        //    IsWithin(tDown.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
-                        //    IsWithin(tDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
-                        //{
-                        //    Tile shadowTile2 = shadowLayer.GetTile(x, y - 1);
-
-                        //    shadowTile.ID = GameConstants.ENVIRONMENT_SHADOW_SQUARE.ToString();
-                        //    shadowTile2.ID = GameConstants.ENVIRONMENT_SHADOW_SQUARE.ToString();
-                        //}
-                        ///*  
-                        // *  
-                        // * BtB   
-                        // * B##
-                        // */
-                        //else if (IsWithin(tDownLeft.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
-                        //    IsWithin(tLeft.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
-                        //    IsWithin(tRight.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK) &&
-                        //    IsWithin(tDown.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER) &&
-                        //    IsWithin(tDownRight.IDInt, GameConstants.TILE_ROOF, GameConstants.TILE_ROOF_SMALL_BOTTOM_RIGHT_CORNER))
-                        //{
-                        //    Tile shadowTile2 = shadowLayer.GetTile(x, y - 1);
-                        //    shadowTile2.ID = GameConstants.ENVIRONMENT_SHADOW_POINT_UP_LEFT.ToString();
-                        //}
+                        /*  
+                         * P
+                         * Pt
+                         * P 
+                         */
+                        else if (IsWithin(tDownLeft.IDInt, GameConstants.TILE_WALL_PILLAR_RIGHT_TOP, GameConstants.TILE_WALL_PILLAR_RIGHT_BOTTOM) &&
+                            IsWithin(tLeft.IDInt, GameConstants.TILE_WALL_PILLAR_RIGHT_TOP, GameConstants.TILE_WALL_PILLAR_RIGHT_BOTTOM) &&
+                            IsWithin(tUpLeft.IDInt, GameConstants.TILE_WALL_PILLAR_RIGHT_TOP, GameConstants.TILE_WALL_PILLAR_RIGHT_BOTTOM))
+                        {
+                            shadowTile.ID = GameConstants.ENVIRONMENT_SHADOW_POINT_DOWN_RIGHT_BOTTOM.ToString();
+                        }
                     }
                 }
             }
@@ -1351,14 +1406,17 @@ namespace DungeonCrawler.Screens
                             if (IsWithin(tLeft.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK))
                             {
                                 tDown1.ID = GameConstants.TILE_WALL_PILLAR_LEFT_TOP.ToString();
+                                tDown1.HasCollision = true;
                             }
                             else if(IsWithin(tLeft.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK))
                             {
                                 tDown1.ID = GameConstants.TILE_WALL_PILLAR_RIGHT_TOP.ToString();
+                                tDown1.HasCollision = true;
                             }
                             else
                             {
                                 tDown1.ID = GetWallType();
+                                tDown1.HasCollision = true;
                             }
                         }
                     }
@@ -1383,7 +1441,9 @@ namespace DungeonCrawler.Screens
                                 Tile tDown3 = layer.GetTile(x, y + 3);
 
                                 tDown1.ID = GameConstants.TILE_WALL_PILLAR_RIGHT_TOP.ToString();
+                                tDown1.HasCollision = true;
                                 tDown2.ID = GameConstants.TILE_WALL_PILLAR_RIGHT_MIDDLE.ToString();
+                                tDown2.HasCollision = true;
                                 tDown3.ID = GameConstants.TILE_WALL_PILLAR_RIGHT_BOTTOM.ToString();
                             }
                             else if (IsWithin(tLeft.IDInt, GameConstants.TILE_FLOOR_BRICK, GameConstants.TILE_FLOOR_BRICK_DARK))
@@ -1391,12 +1451,15 @@ namespace DungeonCrawler.Screens
                                 Tile tDown3 = layer.GetTile(x, y + 3);
 
                                 tDown1.ID = GameConstants.TILE_WALL_PILLAR_LEFT_TOP.ToString();
+                                tDown1.HasCollision = true;
                                 tDown2.ID = GameConstants.TILE_WALL_PILLAR_LEFT_MIDDLE.ToString();
+                                tDown2.HasCollision = true;
                                 tDown3.ID = GameConstants.TILE_WALL_PILLAR_LEFT_BOTTOM.ToString();
                             }
                             else
                             {
                                 tDown1.ID = GetWallType();
+                                tDown1.HasCollision = true;
                                 tDown2.ID = GetWallType(false);
                             }
                         }
@@ -1451,23 +1514,26 @@ namespace DungeonCrawler.Screens
             {
                 DungeonLayer layer = new DungeonLayer();
                 DungeonLayer topLayer = new DungeonLayer();
+                DungeonLayer floorLayer = new DungeonLayer();
                 layer.ZOrder = 0.001f;
                 topLayer.ZOrder = 0.9f;
                 Room room = rb.GetRoom(GameConstants.ROOM_ROOM_02);
 
-                WorldWidth = room.Tiles.GetLength(0);   // These 2 will be changed later... using temp values.
-                WorldHeight = room.Tiles.GetLength(1);
+                WorldWidth = room.Width;
+                WorldHeight = room.Height;
 
-                layer.Width = room.Tiles.GetLength(0);
-                layer.Height = room.Tiles.GetLength(1);
+                layer.Width = room.Width;
+                layer.Height = room.Height;
                 topLayer.Width = layer.Width;
                 topLayer.Height = layer.Height;
+                floorLayer.Width = room.Width;
+                floorLayer.Height = room.Height;
 
-                for (int x = 0; x < room.Tiles.GetLength(0); x++)
+                for (int y = 0; y < room.Height; y++)
                 {
-                    for (int y = 0; y < room.Tiles.GetLength(1); y++)
+                    for (int x = 0; x < room.Width; x++)
                     {
-                        if (room.Tiles[x, y] == '#')
+                        if (room.Tiles[x + y * room.Width] == '#')
                         {
                             Tile t = new Tile(GameConstants.TILE_ROOF.ToString(), new Vector2(x, y));
                             layer.AddTile(t);
@@ -1490,21 +1556,24 @@ namespace DungeonCrawler.Screens
 
                         Tile tEmpty = new Tile(GameConstants.TILE_EMPTY.ToString(), new Vector2(x, y));
                         topLayer.AddTile(tEmpty);
+                        floorLayer.AddTile(tEmpty.DeepCopy());
                     }
                 }
 
                 // Make sure we add the layers in the order we want them...
                 worldMap.AddLayer(GameConstants.BOTTOM_LAYER, layer);
                 worldMap.AddLayer(GameConstants.SHADOW_LAYER, topLayer);
+                worldMap.AddLayer(GameConstants.FLOOR_LAYER, floorLayer);
 
                 DoLayerCalculations(layer);
-                SetCollisionsBodies();
             }
         }
 
-        private void SetCollisionsBodies()
+        private void AddTileCopyFromLayer(Tile t, Layer newLayer)
         {
-            
+            var newTile = t.DeepCopy();
+            newTile.ID = GetRandomGroundTileStyle(GameConstants.TILE_FLOOR_BRICK).ToString();
+            newLayer.AddTile(newTile);
         }
     }
 }

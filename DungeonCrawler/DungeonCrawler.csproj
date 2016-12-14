@@ -43,18 +43,19 @@
     <Compile Include="Game1.cs" />
     <Compile Include="GameConstants.cs" />
     <Compile Include="GraphicsManager.cs" />
+    <Compile Include="Interfaces\IBaseSpeed.cs" />
+    <Compile Include="Physics.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\GameScreenSetup.cs" />
+    <Content Include="TempStuff\TempClass.txt" />
     <Compile Include="World\DungeonLayer.cs" />
     <Compile Include="World\Room.cs" />
     <Compile Include="World\RoomBuilder.cs" />
+    <Compile Include="World\WorldTimer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="FarseerPhysics MonoGame">
-      <HintPath>..\..\..\..\..\Desktop\FarseerPhysics MonoGame.dll</HintPath>
-    </Reference>
     <Reference Include="OpenTK">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\OpenTK.dll</HintPath>
     </Reference>
